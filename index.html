@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5e6dc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #6b4226;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f5e6dc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6b4226;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a361d;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #thankYouMessage {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #6b4226;
+            text-align: center;
+        }
+
+        /* Медиазапросы для адаптации страницы */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                height: auto;
+            }
+
+            .container {
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            button {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.2em;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Your Coffee</h2>
+        <form id="coffeeOrderForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="coffeeType">Preferred Coffee:</label>
+            <select id="coffeeType" name="coffeeType" required>
+                <option value="Espresso">Espresso</option>
+                <option value="Latte">Latte</option>
+                <option value="Cappuccino">Cappuccino</option>
+                <option value="Americano">Americano</option>
+                <option value="Mocha">Mocha</option>
+            </select>
+
+            <button type="submit">Submit Order</button>
+        </form>
+
+        <!-- Блок для сообщения -->
+        <div id="thankYouMessage" class="hidden">Спасибо за заказ!</div>
+    </div>
+
+    <script>
+        document.getElementById('coffeeOrderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const coffeeType = document.getElementById('coffeeType').value;
+
+            const message = `New Coffee Order:\n\nName: ${firstName} ${lastName}\nPhone: ${phoneNumber}\nEmail: ${email}\nPreferred Coffee: ${coffeeType}`;
+
+            const token = '7211034304:AAGsBbkivdWmaY2HRlriBfAOj-iGIGV-pJk';
+            const chat_id = '980836947';
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('coffeeOrderForm').reset();
+                        const thankYouMessage = document.getElementById('thankYouMessage');
+                        thankYouMessage.classList.remove('hidden');
+                        setTimeout(function() {
+                            thankYouMessage.classList.add('hidden');
+                        }, 5000);
+                    } else {
+                        alert('There was an error sending your order. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error sending your order. Please try again.');
+                });
+
+            window.location.href = 'https://111usz.github.io/coffe/';
+        });
+    </script>
+</body>
+</html>
